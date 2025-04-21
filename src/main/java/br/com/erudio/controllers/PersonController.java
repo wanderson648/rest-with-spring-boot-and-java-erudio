@@ -1,7 +1,7 @@
 package br.com.erudio.controllers;
 
 import br.com.erudio.model.Person;
-import br.com.erudio.request.converters.PersonService;
+import br.com.erudio.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class PersonController {
     private PersonService personService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable("id") String id) {
+    public Person findById(@PathVariable("id") Long id) {
         return personService.findById(id);
     }
 
@@ -42,7 +42,7 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") Long id) {
         personService.delete(id);
     }
 
