@@ -1,0 +1,10 @@
+INSERT INTO person (id, first_name, last_name, address, gender) VALUES
+(1, 'São Paulo - Brasil', 'Ayrton', 'Senna', 'Male'),
+(2, 'Anchiano - Italy', 'Leonardo', 'da Vinci', 'Male'),
+(3, 'Porbandar - India', 'Indira', 'Gandhi', 'Female'),
+(4, 'Porbandar - India', 'Mahatma', 'Gandhi', 'Male'),
+(5, 'Kentucky - US', 'Muhammad', 'Ali', 'Male'),
+(6, 'Mvezo - South Africa', 'Nelson', 'Mandela', 'Male'),
+(7, 'Mvezo - South Africa', 'Nelson', 'Mandela', 'Male'),
+(8, 'Smiljan - Croatia', 'Nikola', 'Tesla', 'Male'),
+(9, 'Smiljan - Croatia', 'Ayrton', 'Senna', 'Male');
