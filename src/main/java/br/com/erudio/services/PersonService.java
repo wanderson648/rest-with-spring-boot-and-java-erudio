@@ -1,5 +1,6 @@
 package br.com.erudio.services;
 
+import br.com.erudio.controllers.PersonController;
 import br.com.erudio.dto.PersonDTO;
 import br.com.erudio.exception.ResourceNotFoundException;
 import br.com.erudio.model.Person;
@@ -9,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import java.util.List;
 
 import static br.com.erudio.mapper.ObjectMapper.parseListObjects;
 import static br.com.erudio.mapper.ObjectMapper.parseObject;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +27,9 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public List<PersonDTO> findAll() {
-        return parseListObjects(personRepository.findAll(), PersonDTO.class);
+        var personDTOS = parseListObjects(personRepository.findAll(), PersonDTO.class);
+        personDTOS.forEach(this::addHateoasLinks);
+        return personDTOS;
     }
 
     @Transactional(readOnly = true)
@@ -34,15 +39,18 @@ public class PersonService {
         Person entity = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 
-        return parseObject(entity, PersonDTO.class);
+        var dto =  parseObject(entity, PersonDTO.class);
+        addHateoasLinks(dto);
+        return dto;
     }
 
     @Transactional
     public PersonDTO create(PersonDTO person) {
         logger.info("Creating a person");
         Person entity = parseObject(person, Person.class);
-
-        return parseObject(personRepository.save(entity), PersonDTO.class);
+        PersonDTO personDTO = parseObject(personRepository.save(entity), PersonDTO.class);
+        addHateoasLinks(personDTO);
+        return personDTO;
     }
 
     @Transactional
@@ -56,7 +64,9 @@ public class PersonService {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return parseObject(personRepository.save(entity), PersonDTO.class);
+        PersonDTO personDTO = parseObject(personRepository.save(entity), PersonDTO.class);
+        addHateoasLinks(personDTO);
+        return personDTO;
     }
 
     @Transactional
@@ -64,8 +74,15 @@ public class PersonService {
         logger.info("Deleting one Person");
         Person entity = personRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-
         personRepository.delete(entity);
+    }
+
+    private void addHateoasLinks(PersonDTO dto) {
+        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
+        dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+        dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
     }
 
 }
