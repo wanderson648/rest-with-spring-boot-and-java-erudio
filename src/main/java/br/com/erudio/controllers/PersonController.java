@@ -2,6 +2,7 @@ package br.com.erudio.controllers;
 
 import br.com.erudio.dto.PersonDTO;
 import br.com.erudio.services.PersonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/person")
+@RequiredArgsConstructor
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
 
     @GetMapping(value = "/{id}", produces = {
             MediaType.APPLICATION_JSON_VALUE,
