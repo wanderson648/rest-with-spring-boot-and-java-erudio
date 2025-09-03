@@ -2,7 +2,7 @@ package br.com.erudio.services;
 
 import br.com.erudio.controllers.PersonController;
 import br.com.erudio.dto.PersonDTO;
-import br.com.erudio.exception.RequiredObjectsNullException;
+import br.com.erudio.exception.RequiredObjectIsNullException;
 import br.com.erudio.exception.ResourceNotFoundException;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonRepository;
@@ -45,7 +45,7 @@ public class PersonService {
     public PersonDTO create(PersonDTO person) {
         if (person == null) {
             logger.error("Person is null");
-            throw new RequiredObjectsNullException();
+            throw new RequiredObjectIsNullException();
         }
 
         logger.info("Creating a person");
@@ -58,7 +58,7 @@ public class PersonService {
     public PersonDTO update(PersonDTO person) {
         if (person == null) {
             logger.error("Person is null");
-            throw new RequiredObjectsNullException();
+            throw new RequiredObjectIsNullException();
         }
 
         logger.info("Updating a person");

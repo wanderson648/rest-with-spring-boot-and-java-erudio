@@ -1,7 +1,7 @@
 package br.com.erudio.services;
 
 import br.com.erudio.dto.PersonDTO;
-import br.com.erudio.exception.RequiredObjectsNullException;
+import br.com.erudio.exception.RequiredObjectIsNullException;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonRepository;
 import br.com.erudio.unitetests.mapper.mocks.MockPerson;
@@ -175,7 +175,7 @@ class PersonServiceTest {
 
     @Test
     void testCreateWithNullPerson() {
-        Exception exception = assertThrows(RequiredObjectsNullException.class,
+        Exception exception = assertThrows(RequiredObjectIsNullException.class,
                 () -> {
                     service.create(null);
                 });
@@ -237,7 +237,7 @@ class PersonServiceTest {
 
     @Test
     void testUpdateWithNullPerson() {
-        Exception exception = assertThrows(RequiredObjectsNullException.class,
+        Exception exception = assertThrows(RequiredObjectIsNullException.class,
                 () -> {
                     service.update(null);
                 });
